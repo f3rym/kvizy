@@ -42,9 +42,13 @@ async def main():
     dp.startup.register(on_startup)
     dp.shutdown.register(on_shutdown)
 
-    # TODO: Register handlers here
-    # from src.bot.handlers import commands
-    # dp.include_router(commands.router)
+    # Register middlewares
+    from src.bot.middlewares.auth import AuthMiddleware
+    dp.message.middleware(AuthMiddleware())
+
+    # Register handlers
+    from src.bot.handlers import commands
+    dp.include_router(commands.router)
 
     # Start polling
     try:
