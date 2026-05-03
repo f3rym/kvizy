@@ -8,7 +8,7 @@ from src.utils.logger import logger
 router = Router()
 
 
-@router.message(Command("my_logs"))
+@router.message(Command("my_logs", "mylogs"))
 async def my_logs_handler(message: Message, user: User):
     """Show user's own audit logs"""
     try:
@@ -37,7 +37,7 @@ async def my_logs_handler(message: Message, user: User):
         logger.error(f"Error in my_logs handler: {e}")
 
 
-@router.message(Command("my_stats"))
+@router.message(Command("my_stats", "mystats"))
 async def my_stats_handler(message: Message, user: User):
     """Show user's statistics"""
     try:
@@ -65,7 +65,7 @@ async def my_stats_handler(message: Message, user: User):
         logger.error(f"Error in my_stats handler: {e}")
 
 
-@router.message(Command("audit_logs"))
+@router.message(Command("audit_logs", "auditlogs"))
 async def audit_logs_handler(message: Message, user: User):
     """Show all audit logs - admin only"""
     if not user.is_admin:
@@ -115,7 +115,7 @@ async def audit_logs_handler(message: Message, user: User):
         logger.error(f"Error in audit_logs handler: {e}")
 
 
-@router.message(Command("audit_stats"))
+@router.message(Command("audit_stats", "auditstats"))
 async def audit_stats_handler(message: Message, user: User):
     """Show audit statistics - admin only"""
     if not user.is_admin:
@@ -146,7 +146,7 @@ async def audit_stats_handler(message: Message, user: User):
         logger.error(f"Error in audit_stats handler: {e}")
 
 
-@router.message(Command("audit_search"))
+@router.message(Command("audit_search", "auditsearch"))
 async def audit_search_handler(message: Message, user: User):
     """Search audit logs - admin only"""
     if not user.is_admin:
@@ -189,7 +189,7 @@ async def audit_search_handler(message: Message, user: User):
         logger.error(f"Error in audit_search handler: {e}")
 
 
-@router.message(Command("audit_user"))
+@router.message(Command("audit_user", "audituser"))
 async def audit_user_handler(message: Message, user: User):
     """Show audit logs for specific user - admin only"""
     if not user.is_admin:

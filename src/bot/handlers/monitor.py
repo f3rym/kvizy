@@ -11,27 +11,30 @@ router = Router()
 @router.message(Command("stats"))
 async def stats_handler(message: Message, user: User):
     """Show system statistics"""
+    logger.info(f"Stats handler called by user {user.id}")
     try:
+        logger.info("Getting system stats...")
         stats = await monitor_service.get_system_stats()
+        logger.info(f"Stats received: {stats}")
 
         text = f"""
-📊 **Статистика системы**
+📊 Статистика системы
 
 ⏱ Uptime: {stats['uptime']}
 
-🖥 **CPU:**
+🖥 CPU:
 • Использование: {stats['cpu']['percent']}%
 • Ядер: {stats['cpu']['count']}
 
-💾 **Память:**
+💾 Память:
 • Использовано: {stats['memory']['used_gb']} GB / {stats['memory']['total_gb']} GB
 • Процент: {stats['memory']['percent']}%
 
-💿 **Диск:**
+💿 Диск:
 • Использовано: {stats['disk']['used_gb']} GB / {stats['disk']['total_gb']} GB
 • Процент: {stats['disk']['percent']}%
 
-🌐 **Сеть:**
+🌐 Сеть:
 • Отправлено: {stats['network']['sent_mb']} MB
 • Получено: {stats['network']['recv_mb']} MB
 """
@@ -39,15 +42,21 @@ async def stats_handler(message: Message, user: User):
         # Check for alerts
         alerts = await monitor_service.check_alerts(stats)
         if alerts:
-            text += "\n⚠️ **Предупреждения:**\n"
+            text += "\n⚠️ Предупреждения:\n"
             for alert in alerts:
                 text += f"• {alert}\n"
 
-        await message.answer(text, parse_mode="Markdown")
+        logger.info(f"Sending message with length: {len(text)}")
+        try:
+            result = await message.answer(text)
+            logger.info(f"Message sent successfully, message_id={result.message_id}")
+        except Exception as e:
+            logger.error(f"Failed to send message: {e}", exc_info=True)
+            raise
 
     except Exception as e:
+        logger.error(f"Error in stats handler: {e}", exc_info=True)
         await message.answer(f"❌ Ошибка получения статистики: {str(e)}")
-        logger.error(f"Error in stats handler: {e}")
 
 
 @router.message(Command("docker"))
@@ -61,21 +70,21 @@ async def docker_handler(message: Message, user: User):
             return
 
         text = f"""
-🐳 **Docker контейнеры** ({docker_stats['total_containers']})
+🐳 <b>Docker контейнеры</b> ({docker_stats['total_containers']})
 
 """
 
         for container in docker_stats['containers']:
             status_emoji = "✅" if container['status'] == 'running' else "❌"
             text += f"""
-{status_emoji} **{container['name']}**
+{status_emoji} <b>{container['name']}</b>
 • Статус: {container['status']}
 • CPU: {container['cpu_percent']}%
 • Memory: {container['memory_mb']} MB ({container['memory_percent']}%)
 
 """
 
-        await message.answer(text, parse_mode="Markdown")
+        await message.answer(text, parse_mode="HTML")
 
     except Exception as e:
         await message.answer(f"❌ Ошибка получения Docker статистики: {str(e)}")
@@ -88,7 +97,7 @@ async def alerts_handler(message: Message, user: User):
     thresholds = monitor_service.get_thresholds()
 
     text = f"""
-🔔 **Пороги предупреждений**
+🔔 <b>Пороги предупреждений</b>
 
 • CPU: {thresholds['cpu_percent']}%
 • Memory: {thresholds['memory_percent']}%
@@ -97,10 +106,10 @@ async def alerts_handler(message: Message, user: User):
 Используйте /set_alert для изменения порогов.
 """
 
-    await message.answer(text, parse_mode="Markdown")
+    await message.answer(text, parse_mode="HTML")
 
 
-@router.message(Command("set_alert"))
+@router.message(Command("set_alert", "setalert"))
 async def set_alert_handler(message: Message, user: User):
     """Set alert threshold - admin only"""
     if not user.is_admin:

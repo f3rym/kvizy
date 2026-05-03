@@ -69,3 +69,4 @@ htmlcov/
 tmp/
 temp/
 *.tmp
+kubeconfig.yaml

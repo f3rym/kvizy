@@ -56,7 +56,9 @@ class AuditMiddleware(BaseMiddleware):
 
         try:
             # Process handler
+            logger.info(f"AuditMiddleware: calling handler for action={action}")
             result = await handler(event, data)
+            logger.info(f"AuditMiddleware: handler completed for action={action}")
             success = True
         except Exception as e:
             success = False

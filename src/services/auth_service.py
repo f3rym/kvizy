@@ -50,6 +50,28 @@ class AuthService:
         return None
 
     async def get_user_by_id(self, user_id: int) -> Optional[User]:
+        """Get user by internal ID"""
+        row = await db.fetchrow(
+            "SELECT id, telegram_id, username, role, created_at, updated_at FROM users WHERE id = $1",
+            user_id
+        )
+
+        if row:
+            return User(**dict(row))
+        return None
+
+    async def get_user_by_username(self, username: str) -> Optional[User]:
+        """Get user by username"""
+        row = await db.fetchrow(
+            "SELECT id, telegram_id, username, role, created_at, updated_at FROM users WHERE username = $1",
+            username
+        )
+
+        if row:
+            return User(**dict(row))
+        return None
+
+    async def get_user_by_id(self, user_id: int) -> Optional[User]:
         """Get user by ID"""
         row = await db.fetchrow(
             "SELECT id, telegram_id, username, role, created_at, updated_at FROM users WHERE id = $1",

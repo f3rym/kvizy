@@ -9,8 +9,11 @@ pydantic-settings==2.1.0
 # Security
 cryptography==41.0.7
 
-# Claude CLI (install separately: pip install anthropic-cli)
-# anthropic-cli
+# Claude API
+anthropic>=0.39.0
+
+# Scheduler
+apscheduler==3.10.4
 
 # Utilities
 psutil==5.9.6

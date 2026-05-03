@@ -87,7 +87,8 @@ class MonitorService:
         """
         try:
             import docker
-            client = docker.from_env()
+            # Connect to Docker socket
+            client = docker.DockerClient(base_url='unix://var/run/docker.sock')
 
             containers = client.containers.list()
             container_stats = []
