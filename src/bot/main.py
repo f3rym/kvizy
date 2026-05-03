@@ -55,9 +55,10 @@ async def main():
     dp.message.middleware(AuthMiddleware())
 
     # Register handlers
-    from src.bot.handlers import commands, claude
+    from src.bot.handlers import commands, claude, files
     dp.include_router(commands.router)
     dp.include_router(claude.router)
+    dp.include_router(files.router)
 
     # Start polling
     try:
