@@ -9,6 +9,9 @@ pydantic-settings==2.1.0
 # Security
 cryptography==41.0.7
 
+# Claude CLI (install separately: pip install anthropic-cli)
+# anthropic-cli
+
 # Utilities
 psutil==5.9.6
 docker==7.0.0
