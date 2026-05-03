@@ -54,7 +54,13 @@ async def help_handler(message: Message):
 /profile - Ваш профиль
 
 **Команды Claude AI:**
-(будут добавлены в следующей фазе)
+/api_key_add - Добавить API ключ
+/api_key_show - Показать API ключ (замаскированный)
+/api_key_remove - Удалить API ключ
+/ask <вопрос> - Задать вопрос Claude
+/analyze <код> - Анализ кода
+/review <код> - Code review
+/fix <код> - Исправить код
 
 **Файловая система:**
 (будут добавлены в следующей фазе)

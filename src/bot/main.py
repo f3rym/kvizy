@@ -16,12 +16,20 @@ async def on_startup():
     await db.connect()
     logger.info("Database connected")
 
+    # Connect cache service
+    from src.services.cache_service import cache_service
+    await cache_service.connect()
+
     logger.info("Bot started successfully!")
 
 
 async def on_shutdown():
     """Actions on bot shutdown"""
     logger.info("Shutting down Claude Telegram Bot...")
+
+    # Disconnect cache service
+    from src.services.cache_service import cache_service
+    await cache_service.disconnect()
 
     # Disconnect from database
     await db.disconnect()
@@ -47,8 +55,9 @@ async def main():
     dp.message.middleware(AuthMiddleware())
 
     # Register handlers
-    from src.bot.handlers import commands
+    from src.bot.handlers import commands, claude
     dp.include_router(commands.router)
+    dp.include_router(claude.router)
 
     # Start polling
     try:
