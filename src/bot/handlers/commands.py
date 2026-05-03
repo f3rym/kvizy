@@ -72,6 +72,12 @@ async def help_handler(message: Message):
 /rm <файл> - Удалить файл
 /download <файл> - Скачать файл
 📎 Отправить файл - Загрузить файл в бот
+
+**Мониторинг:**
+/stats - Статистика системы
+/docker - Статистика Docker контейнеров
+/health - Быстрая проверка здоровья
+/alerts - Показать пороги предупреждений
 """
 
     if user.is_admin:
@@ -79,6 +85,7 @@ async def help_handler(message: Message):
 **Команды администратора:**
 /users - Список пользователей
 /make_admin <user_id> - Сделать пользователя админом
+/set_alert <metric> <value> - Установить порог предупреждения
 """
 
     await message.answer(help_text, parse_mode="Markdown")
