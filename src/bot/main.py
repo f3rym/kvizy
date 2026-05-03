@@ -52,14 +52,17 @@ async def main():
 
     # Register middlewares
     from src.bot.middlewares.auth import AuthMiddleware
+    from src.bot.middlewares.audit import AuditMiddleware
     dp.message.middleware(AuthMiddleware())
+    dp.message.middleware(AuditMiddleware())
 
     # Register handlers
-    from src.bot.handlers import commands, claude, files, monitor
+    from src.bot.handlers import commands, claude, files, monitor, audit
     dp.include_router(commands.router)
     dp.include_router(claude.router)
     dp.include_router(files.router)
     dp.include_router(monitor.router)
+    dp.include_router(audit.router)
 
     # Start polling
     try:

@@ -78,6 +78,10 @@ async def help_handler(message: Message):
 /docker - Статистика Docker контейнеров
 /health - Быстрая проверка здоровья
 /alerts - Показать пороги предупреждений
+
+**Логи и аудит:**
+/my_logs - Мои последние действия
+/my_stats - Моя статистика
 """
 
     if user.is_admin:
@@ -86,6 +90,10 @@ async def help_handler(message: Message):
 /users - Список пользователей
 /make_admin <user_id> - Сделать пользователя админом
 /set_alert <metric> <value> - Установить порог предупреждения
+/audit_logs [limit] [offset] - Все логи аудита
+/audit_stats - Статистика действий
+/audit_search <запрос> - Поиск в логах
+/audit_user <user_id> - Логи пользователя
 """
 
     await message.answer(help_text, parse_mode="Markdown")
